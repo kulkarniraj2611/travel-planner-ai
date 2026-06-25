@@ -1,0 +1,139 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>WanderAI — Travel Planner</title>
+  <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}"/>
+  <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;700&family=Inter:wght@300;400;500;600&display=swap" rel="stylesheet"/>
+</head>
+<body>
+
+<!-- NAV -->
+<nav class="nav">
+  <div class="nav-brand">✈ WanderAI</div>
+  <div class="nav-links">
+    <a href="#planner" class="nav-link active" onclick="showTab('planner')">Plan Trip</a>
+    <a href="#explore" class="nav-link" onclick="showTab('explore')">Explore</a>
+    <a href="#history" class="nav-link" onclick="showTab('history')">My Trips</a>
+  </div>
+</nav>
+
+<!-- HERO -->
+<section class="hero">
+  <div class="hero-content">
+    <span class="hero-tag">AI-Powered</span>
+    <h1 class="hero-title">Your Perfect Trip,<br>Planned in Seconds</h1>
+    <p class="hero-sub">Tell us where you want to go. Our AI builds a full day-by-day itinerary — saved to your personal trip history.</p>
+    <div class="hero-stats" id="heroStats">
+      <div class="stat"><span class="stat-num" id="statDest">1000+</span><span class="stat-label">Destinations</span></div>
+      <div class="stat"><span class="stat-num" id="statTrips">0</span><span class="stat-label">Trips Planned</span></div>
+    </div>
+  </div>
+</section>
+
+<!-- MAIN CONTENT -->
+<main class="main">
+
+  <!-- PLANNER TAB -->
+  <section id="tab-planner" class="tab active">
+    <div class="card planner-card">
+      <h2 class="card-title">Plan Your Trip</h2>
+      <div class="form-grid">
+        <div class="form-group">
+          <label>Your Name</label>
+          <input type="text" id="userName" placeholder="e.g. Raj" />
+        </div>
+        <div class="form-group">
+          <label>Destination <span class="required">*</span></label>
+          <input type="text" id="destination" placeholder="e.g. Bali, Paris, Goa..." />
+        </div>
+        <div class="form-group">
+          <label>Duration (days)</label>
+          <input type="number" id="duration" value="5" min="1" max="30" />
+        </div>
+        <div class="form-group">
+          <label>Budget (₹ total)</label>
+          <input type="number" id="budget" value="50000" min="1000" />
+        </div>
+        <div class="form-group">
+          <label>Travel Style</label>
+          <select id="travelStyle">
+            <option>Cultural</option>
+            <option>Adventure</option>
+            <option>Beach</option>
+            <option>Romantic</option>
+            <option>Luxury</option>
+            <option>Nature</option>
+            <option>Budget</option>
+          </select>
+        </div>
+        <div class="form-group">
+          <label>Number of Travelers</label>
+          <input type="number" id="numTravelers" value="1" min="1" max="20" />
+        </div>
+        <div class="form-group full-width">
+          <label>Special Preferences</label>
+          <input type="text" id="preferences" placeholder="e.g. vegetarian food, no stairs, photography spots..." />
+        </div>
+      </div>
+      <button class="btn-primary" onclick="generateItinerary()" id="generateBtn">
+        ✨ Generate Itinerary
+      </button>
+    </div>
+
+    <!-- RESULT -->
+    <div id="result" class="result-card hidden">
+      <div class="result-header">
+        <h2 id="resultTitle">Your Itinerary</h2>
+        <button class="btn-secondary" onclick="copyItinerary()">📋 Copy</button>
+      </div>
+      <div id="itineraryContent" class="itinerary-body"></div>
+    </div>
+  </section>
+
+  <!-- EXPLORE TAB -->
+  <section id="tab-explore" class="tab hidden">
+    <div class="card">
+      <h2 class="card-title">Explore Destinations</h2>
+      <div class="filter-row">
+        <select id="filterStyle" onchange="loadDestinations()">
+          <option value="">All Styles</option>
+          <option>Cultural</option>
+          <option>Adventure</option>
+          <option>Beach</option>
+          <option>Romantic</option>
+          <option>Luxury</option>
+          <option>Nature</option>
+        </select>
+        <input type="number" id="filterBudget" placeholder="Max daily budget ($)" onchange="loadDestinations()" />
+      </div>
+      <div id="destinationGrid" class="dest-grid"></div>
+    </div>
+  </section>
+
+  <!-- HISTORY TAB -->
+  <section id="tab-history" class="tab hidden">
+    <div class="card">
+      <h2 class="card-title">My Trips</h2>
+      <div id="tripsList" class="trips-list"></div>
+    </div>
+
+    <!-- Trip Detail Modal -->
+    <div id="tripModal" class="modal hidden">
+      <div class="modal-box">
+        <button class="modal-close" onclick="closeModal()">✕</button>
+        <div id="modalContent"></div>
+      </div>
+    </div>
+  </section>
+
+</main>
+
+<footer class="footer">
+  <p>WanderAI · AI-Powered Travel Planner · Built with Python, MySQL & Claude AI</p>
+</footer>
+
+<script src="{{ url_for('static', filename='js/app.js') }}"></script>
+</body>
+</html>
